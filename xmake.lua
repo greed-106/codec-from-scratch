@@ -1,7 +1,13 @@
 add_rules("mode.debug", "mode.release")
 add_rules("plugin.compile_commands.autoupdate", {outputdir = ".vscode"})
 
-target("codec-from-scratch")
-    set_kind("binary")
-    add_files("src/*.cpp")
+if is_plat("windows") then
+    add_cxxflags("/utf-8")
+    add_defines("NOMINMAX")
+end
 
+set_languages("cxx20")
+
+includes(
+    "src/video-encoder"
+)
