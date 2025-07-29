@@ -1,8 +1,7 @@
 #include <iostream>
-#include "Frame.hpp"
+#include "DCT.hpp"
 
 int main() {
-    Frame f;
     std::cout << "hello world!" << std::endl;
     return 0;
 }
