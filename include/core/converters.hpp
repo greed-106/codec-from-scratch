@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Frames.hpp"
+#include "frames.hpp"
 #include <algorithm>
 #include <cmath>
 
-namespace Converters {
+namespace converters {
 
     uint8_t clampToUint8(double value){
         return static_cast<uint8_t>(std::clamp(static_cast<int>(std::round(value)), 0, 255));
@@ -76,7 +76,7 @@ namespace Converters {
                 }
             }
         }
-        
+
         return ycbcrFrame;
     }
 };

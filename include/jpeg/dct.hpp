@@ -1,19 +1,16 @@
 #pragma once
 
-#include "Frames.hpp"
+#include "core/frames.hpp"
+#include "dct-constants.hpp"
 #include <array>
 #include <cmath>
 #include <algorithm>
 #include <ranges>
 
-namespace ImageTransforms {
-    // Constants for DCT
-    inline constexpr size_t DCT_BLOCK_SIZE = 8;
-    inline constexpr size_t DCT_BLOCK_ELEMS = DCT_BLOCK_SIZE * DCT_BLOCK_SIZE;
+namespace jpeg {
 
-    // Aliases for DCT blocks and coefficients
-    using DCTBlock = std::array<uint8_t, DCT_BLOCK_ELEMS>;
-    using DCTCoeffs = std::array<int16_t, DCT_BLOCK_ELEMS>;
+namespace transforms {
+    
 
     /**
      * DCT_COS_TABLE[x * DCT_BLOCK_SIZE + u] = cos((2 * x + 1) * u * π / (2 * N))
@@ -22,7 +19,7 @@ namespace ImageTransforms {
      * u is the frequency index (0 to 7)
      * This table is used to calculate the DCT coefficients for an 8x8 block
      */
-    constexpr std::array<double, DCT_BLOCK_ELEMS> DCT_COSINE_TABLE = {
+    constexpr DCTCosineTable DCT_COSINE_TABLE = {
         1.000000,  0.980785,  0.923880,  0.831470,  0.707107,  0.555570,  0.382683,  0.195090,
         1.000000,  0.831470,  0.382683, -0.195090, -0.707107, -0.980785, -0.923880, -0.555570,
         1.000000,  0.555570, -0.382683, -0.980785, -0.707107,  0.195090,  0.923880,  0.831470,
@@ -40,8 +37,11 @@ namespace ImageTransforms {
         DCTCoeffs coeffs = {};
 
         // Level Shift
-        auto shfitedRange = block | std::views::transform([](uint8_t val) { return static_cast<int16_t>(val) - 128; });
-        std::vector<int16_t> shiftedBlock(shfitedRange.begin(), shfitedRange.end());
+        // auto shfitedRange = block | std::views::transform([](uint8_t val) { return static_cast<int16_t>(val) - 128; });
+        // std::vector<int16_t> shiftedBlock(shfitedRange.begin(), shfitedRange.end());
+        std::array<int16_t, DCT_BLOCK_ELEMS> shiftedBlock;
+        std::transform(block.begin(), block.end(), shiftedBlock.begin(),
+            [](uint8_t val) { return static_cast<int16_t>(val) - 128; });
 
         std::array<double, DCT_BLOCK_ELEMS> tempCoefficents = {};
 
@@ -79,4 +79,6 @@ namespace ImageTransforms {
 
         return coeffs;
     }
+}
+    
 }
