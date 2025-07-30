@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/frames.hpp"
 #include "dct-constants.hpp"
 #include <array>
 #include <cmath>
