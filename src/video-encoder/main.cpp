@@ -1,7 +1,6 @@
 #include <iostream>
-#include "DCT.hpp"
 
 int main() {
-    std::cout << "hello world!" << std::endl;
+    std::printf("Hello, Codec from Scratch!\n");
     return 0;
 }
