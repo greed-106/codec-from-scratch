@@ -69,11 +69,14 @@ namespace jpeg {
                 // Shift the buffer to the left to make space for new bits
                 buffer <<= bitsToWrite;
                 // Add the new bits to the buffer
+                // value >> (bitsLength - bitsToWrite) : move the bits we want to write to the rightmost position
+                // (1 << bitsToWrite) - 1 : create a mask to keep only the bits we want to write
                 buffer |= (value >> (bitsLength - bitsToWrite)) & ((1 << bitsToWrite) - 1);
                 bitsLengthInBuffer += bitsToWrite;
                 bitsLength -= bitsToWrite;
                 // clear the bits that have been written
-                value &= ((1u << bitsLength) - 1); // Keep only the remaining bits
+                // Keep only the remaining bits
+                value &= ((1u << bitsLength) - 1);
                 
                 if(bitsLengthInBuffer == bufferSize) {
                     writeBuffer(); // Write the buffer if it's full
